@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery-1.11.2.js"></script>
+    <style>
+        body,
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        [type="text"] {
+            width: 50px;
+        }
+
+        body {
+            background-color: rgb(237, 215, 167);
+        }
+
+        #big {
+            position: relative;
+
+        }
+
+        #tian {
+            width: 281px;
+            position: absolute;
+            text-align: center;
+            left: 50%;
+            top: 200px;
+            margin-left: -140px;
+        }
+
+        ul {
+            height: 125px;
+            text-align: center;
+            padding: 30px 0 0 30px;
+            border-radius: 20px;
+            /* background-color: rgb(27, 233, 240); */
+            position: absolute;
+            left: 50%;
+            top: 400px;
+        }
+
+        ul>li {
+            position: absolute;
+            width: 100px;
+            font: 25px/4em 微软雅黑;
+            height: 100px;
+            margin-right: 30px;
+            margin-bottom: 30px;
+            background-color: rgb(240, 71, 71);
+        }
+    </style>
+    <script>
+        $(function () {
+
+            //点击确认
+            var num0; var num1;
+            $("input:eq(2)").click(function () {
+                $("ul").text(" ");
+
+                num0 = $("input:eq(0)").val() - 0;
+                num1 = $("input:eq(1)").val() - 0;
+
+                var xq = -(130 * num0 + 30) / 2 + "px"
+
+                //添加li
+                $("ul").css({ "marginLeft": xq, "display": "block", "width": 130 * num0 + 30 + "px" })
+                for (var i = 1; i <= num0; i++) {
+                    $("ul").append("<li>" + i + "<div></div></li>")
+                }
+
+                //给li定位
+                var q = 0;
+                $("li").css("left", function () { return (q++) * 135 + "px" })
+            })
+
+
+
+            //点击开始
+            var flag = true;
+            var timer
+            $("input:eq(3)").click(function () {
+
+                if (flag) {
+                    clearInterval(timer);
+                    timer = setInterval(go, 1000);
+                    flag = false;
+                    $("input:eq(3)").val("暂停");
+                } else {
+                    flag = true;
+                    $("input:eq(3)").val("开始");
+                    clearInterval(timer);
+
+                }
+
+            })
+
+            var d = 0;
+            var out = 0;
+            var s;
+            function go() {
+                if ($("li").size() == 1) {
+                    return 11
+                }
+
+                s = $("li").size()
+                if (d == s) {
+                    $("li:hidden").remove();
+                    d = 0;
+                    s = $("li").size();
+
+                }
+                //动态边框
+                out++;
+                $("li").css("border", "none");
+                $("li div").text(" ");
+                $("li:eq(" + d + ")").css("border", "6px solid #09f").children(0).text(out);
+                // $("div:eq(" + d + ")").text(out);
+                // .siblings().css("border", "none");
+                console.log(3, d, s, out, num1, $("li"));
+
+                if (out == num1) {
+                    $("li:eq(" + (d) + ")").hide(300);
+                    out = 0;
+
+                }
+
+
+                d++;
+            }
+        })
+
+
+
+
+    </script>
+</head>
+
+<body>
+    <div id="big">
+        <div id="tian">
+            个数：<input type="text"> 条件值：<input type="text"> <br><br>
+            <input type="button" value="确定"><br><br>
+            <input type="button" value="开始">
+        </div>
+        <ul>
+
+        </ul>
+    </div>
+</body>
+
+</html>
